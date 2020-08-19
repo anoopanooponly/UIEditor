@@ -61,7 +61,7 @@ const ResizableDiv = observer((props) => {
       props.column.items.map(item => {
 
         if (item.id == state.itemId) {
-          item.w = state.widths[state.currentPanel] + (state.delta / store.screenSize.size) * 100+ 10;
+          item.w = state.widths[state.currentPanel] + (state.delta / ((props.column.w[store.screenSize.code] * store.screenSize.size)/100) * 100) ;
         }
       });
 
@@ -73,7 +73,7 @@ const ResizableDiv = observer((props) => {
           isDragging: false,
           widths: {
             ...widths,
-            [currentPanel]: widths[currentPanel] + (delta / store.screenSize.size) * 100,
+            [currentPanel]: widths[currentPanel] + (state.delta / ((props.column.w[store.screenSize.code] * store.screenSize.size)/100) * 100),
             // [currentPanel]: (panels[currentPanel] || 0) + delta,
             // [currentPanel - 1]: (panels[currentPanel - 1] || 0) + delta
           },
