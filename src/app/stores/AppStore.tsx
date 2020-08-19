@@ -1,6 +1,6 @@
 import { observable, action, decorate } from 'mobx';
 import { v4 as uuid } from 'uuid';
-
+import { useLocalStore } from 'mobx-react';
 class AppStore {
 
   @observable screenSize: any = {size: 1600, code: "lg"};
@@ -93,18 +93,28 @@ class AppStore {
     ],
   };
 
+  get activeTodos() {
+   return this.uiLayout;
+  }
+
   @action currentScreenSize(val) {
     this.currentScreen = val;
   }
   @action onDragEnd1 = (result) => {
+    
     const { source, destination } = result;
     console.log('==> result', result);
+    this.uiLayout =[]
   };
 
   @action stopResize1 = () => {
     console.log('==> ii');
   };
 }
+
+
+
+
 
 const appStoreInstance = new AppStore();
 export default appStoreInstance;

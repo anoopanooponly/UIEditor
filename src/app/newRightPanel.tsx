@@ -186,6 +186,25 @@ const NewRightPanel = observer(() => {
   const resizeScreen = () => {
     appStoreInstance.screenSize = 900;
   }
+
+  const Foo = observer(() => {
+    return (
+      <React.Fragment>
+      {
+      Object.keys(appStoreInstance.uiLayout).map((list, index) => (
+        <NewDiv 
+          orgstate={appStoreInstance.uiLayout}
+          list={list}
+          index={index}
+          currentscreen={appStoreInstance.currentScreen}
+        ></NewDiv>
+      ))}
+
+      </React.Fragment>
+     
+    )
+  })
+
     return (
     <RightDiv>
 
@@ -233,14 +252,7 @@ const NewRightPanel = observer(() => {
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
                 >
-                  {Object.keys(appStoreInstance.uiLayout).map((list, index) => (
-                    <NewDiv 
-                      orgstate={appStoreInstance.uiLayout}
-                      list={list}
-                      index={index}
-                      currentscreen={appStoreInstance.currentScreen}
-                    ></NewDiv>
-                  ))}
+                  <Foo />
                 </div>
               )}
             </Droppable>

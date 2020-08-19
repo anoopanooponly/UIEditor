@@ -5,7 +5,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import ReactHtmlParser from 'react-html-parser';
 import useEventListener from './use-event-listener';
 import { observer } from "mobx-react";
-import { AppStoreContext } from './newRightPanel';
+import { AppStoreContext } from './MainSection';
 import DynamicComponent from './DyamicComponents';
 
 const getItemStyle2 = (isDragging, draggableStyle, width) => ({
@@ -21,7 +21,7 @@ const getItemStyle2 = (isDragging, draggableStyle, width) => ({
   // change background colour if dragging
   background: isDragging ? 'lightgreen' : 'white',
 
-  border: '1px dotted grey',
+  border: '1px solid grey',
   // styles we need to apply on draggables
   ...draggableStyle,
 });
@@ -61,7 +61,7 @@ const ResizableDiv = observer((props) => {
       props.column.items.map(item => {
 
         if (item.id == state.itemId) {
-          item.w = state.widths[state.currentPanel] + (state.delta / store.screenSize.size) * 100;
+          item.w = state.widths[state.currentPanel] + (state.delta / store.screenSize.size) * 100+ 10;
         }
       });
 
@@ -128,7 +128,12 @@ const ResizableDiv = observer((props) => {
               
               <div
                 onMouseDown={(e) => startResize(e, index, item.id)}
-                key={'resizer_'}
+                key={'resizer_' + props.index}
+                style={
+                  state.currentPanel === index
+                    ? { left: state.delta }
+                    : {}
+                }
                 className="resizer"
               ></div>
             </div>

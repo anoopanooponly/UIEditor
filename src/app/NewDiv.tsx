@@ -6,7 +6,7 @@ import ResizableDiv from './ResizeDiv';
 import { observer } from "mobx-react";
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import useEventListener from './use-event-listener';
-import { AppStoreContext } from './newRightPanel';
+import { AppStoreContext } from './MainSection';
 import { trace, toJS } from 'mobx'
 
 
