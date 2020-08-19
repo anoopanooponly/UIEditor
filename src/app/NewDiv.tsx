@@ -20,6 +20,7 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   background: isDragging ? 'lightgreen' : 'whitesmoke',
   display: 'flex',
   flexFlow: 'row',
+  border: '1px dashed gray',
   // styles we need to apply on draggables
   ...draggableStyle,
   flexWrap: 'wrap'
@@ -49,8 +50,19 @@ const NewDiv = observer((props) => {
 
 
   const startResize = (event: any, index: any, currentRowId: any) => {
+    let panels = [];
+    props.orgstate[currentRowId].map(listItems => {
+      if(listItems.columns && listItems.columns.length){
+        listItems.columns.map((column, index) => {
+          panels[index] = column.w[props.currentscreen];
+        });
+      }
+      
+    }
+      );
     setState({
       ...state,
+      panels: panels,
       isDragging: true,
       currentPanel: index,
       currentRowId: currentRowId,
@@ -72,7 +84,7 @@ const NewDiv = observer((props) => {
 
           if (listItems.columns &&
             listItems.columns.length)
-            listItems.columns[state.currentPanel].w = state.panels[state.currentPanel] + (state.delta / store.screenSize) * 100;
+            listItems.columns[state.currentPanel].w[props.currentscreen] = state.panels[state.currentPanel] + (state.delta / store.screenSize.size) * 100;
         }
       );
 
@@ -81,7 +93,7 @@ const NewDiv = observer((props) => {
           isDragging: false,
           panels: {
             ...panels,
-            [currentPanel]: panels[currentPanel] + (delta / store.screenSize) * 100,
+            [currentPanel]: panels[currentPanel] + (delta / store.screenSize.size) * 100,
             // [currentPanel]: (panels[currentPanel] || 0) + delta,
             // [currentPanel - 1]: (panels[currentPanel - 1] || 0) + delta
           },
@@ -122,9 +134,9 @@ const NewDiv = observer((props) => {
       index={props.index}
     >
       {(provided: any, snapshot: any) => (
-        <div onMouseUp={(e: any) => stopResize(e)}>
+        <div onMouseUp={(e: any) => stopResize(e)} className={style.test}>
           <div
-            className={style.dragContainer}
+            className="dragContainer"
             ref={provided.innerRef}
             {...provided.draggableProps}
             style={getItemStyle(
@@ -132,7 +144,7 @@ const NewDiv = observer((props) => {
               provided.draggableProps.style
             )}
           >
-            <span {...provided.dragHandleProps} className={style.drag}>
+            <span {...provided.dragHandleProps} className="drag">
               {' '}
             </span>
 
@@ -153,7 +165,7 @@ const NewDiv = observer((props) => {
                             column={column}
                             provider={provided.innerRef}
                             index={index}
-                            width={column.w}
+                            width={column.w[props.currentscreen]}
                           ></ResizableDiv>
 
                           <div
@@ -166,7 +178,7 @@ const NewDiv = observer((props) => {
                                 ? { left: state.delta }
                                 : {}
                             }
-                            className={style.resizer}
+                            className="resizer"
                           ></div>
                         </React.Fragment>
                       )}

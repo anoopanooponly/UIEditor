@@ -6,6 +6,7 @@ import ReactHtmlParser from 'react-html-parser';
 import useEventListener from './use-event-listener';
 import { observer } from "mobx-react";
 import { AppStoreContext } from './newRightPanel';
+import DynamicComponent from './DyamicComponents';
 
 const getItemStyle2 = (isDragging, draggableStyle, width) => ({
   // some basic styles to make the items look a bit nicer
@@ -20,7 +21,7 @@ const getItemStyle2 = (isDragging, draggableStyle, width) => ({
   // change background colour if dragging
   background: isDragging ? 'lightgreen' : 'white',
 
-  border: '1px solid grey',
+  border: '1px dotted grey',
   // styles we need to apply on draggables
   ...draggableStyle,
 });
@@ -60,7 +61,7 @@ const ResizableDiv = observer((props) => {
       props.column.items.map(item => {
 
         if (item.id == state.itemId) {
-          item.w = state.widths[state.currentPanel] + (state.delta / store.screenSize) * 100;
+          item.w = state.widths[state.currentPanel] + (state.delta / store.screenSize.size) * 100;
         }
       });
 
@@ -72,7 +73,7 @@ const ResizableDiv = observer((props) => {
           isDragging: false,
           widths: {
             ...widths,
-            [currentPanel]: widths[currentPanel] + (delta / store.screenSize) * 100,
+            [currentPanel]: widths[currentPanel] + (delta / store.screenSize.size) * 100,
             // [currentPanel]: (panels[currentPanel] || 0) + delta,
             // [currentPanel - 1]: (panels[currentPanel - 1] || 0) + delta
           },
@@ -102,7 +103,7 @@ const ResizableDiv = observer((props) => {
 
   return (
     <div
-      className={style.panel}
+      className="panel"
       style={{ width: `${props.width}%` }}
       onMouseUp={(e) => stopResize(e)}
       ref={props.provider}
@@ -119,15 +120,16 @@ const ResizableDiv = observer((props) => {
                 item.w
               )}
             >
-              <span {...provided.dragHandleProps} className={style.drag}>
+              <span {...provided.dragHandleProps} className="drag">
                 {' '}
               </span>
 
-              {ReactHtmlParser(item.content)}
+              <DynamicComponent type={item.type} theme="" />
+              
               <div
                 onMouseDown={(e) => startResize(e, index, item.id)}
                 key={'resizer_'}
-                className={style.resizer}
+                className="resizer"
               ></div>
             </div>
           )}

@@ -3,34 +3,59 @@ import { v4 as uuid } from 'uuid';
 
 class AppStore {
 
-  @observable screenSize: number = 1600;
+  @observable screenSize: any = {size: 1600, code: "lg"};
+  @observable currentScreen: any = "lg";
+
+
   @observable uiLayout = {
     [uuid()]: [
       {
         columns: [
           {
             id: uuid(),
-            w: 20,
+            w: {lg: 20, md: 25, sm: 46},
             items: [
               {
                 id: uuid(),
-                content: '<input type="text" style="width:100%" value="aa" />',
+                type: 'inputtext',
                 w: 20,
               },
               {
                 id: uuid(),
-                content: '<div>ss</div>',
+                type: 'button',
                 w: 40,
               },
             ],
           },
           {
             id: uuid(),
-            w: 75,
+            w: {lg: 25, md: 25, sm: 49},
             items: [
               {
                 id: uuid(),
-                content: '<div>tt</div>',
+                type: 'button',
+                w: 40,
+              },
+            ],
+          },
+          {
+            id: uuid(),
+            w: {lg: 20, md: 25, sm: 49},
+            items: [
+              {
+                id: uuid(),
+                type: 'button',
+                w: 40,
+              },
+            ],
+          },
+          {
+            id: uuid(),
+            w: {lg: 20, md: 25, sm: 46},
+            items: [
+              {
+                id: uuid(),
+                type: 'button',
                 w: 40,
               },
             ],
@@ -43,22 +68,22 @@ class AppStore {
         columns: [
           {
             id: uuid(),
-            w: 49,
+            w: {lg: 20, md: 25, sm: 50},
             items: [
               {
                 id: uuid(),
-                content: '<div>headline</div>',
+                type: 'inputtext',
                 w: 30,
               },
             ],
           },
           {
             id: uuid(),
-            w: 49,
+            w: {lg: 20, md: 25, sm: 50},
             items: [
               {
                 id: uuid(),
-                content: '<div>new1</div>',
+                type: 'inputtext',
                 w: 30,
               },
             ],
@@ -68,29 +93,9 @@ class AppStore {
     ],
   };
 
-  ITEMS = [
-    {
-      id: uuid(),
-      content: 'Headline',
-    },
-    {
-      id: uuid(),
-      content: 'Copy',
-    },
-    {
-      id: uuid(),
-      content: 'Image',
-    },
-    {
-      id: uuid(),
-      content: 'Slideshow',
-    },
-    {
-      id: uuid(),
-      content: 'Quote',
-    },
-  ];
-
+  @action currentScreenSize(val) {
+    this.currentScreen = val;
+  }
   @action onDragEnd1 = (result) => {
     const { source, destination } = result;
     console.log('==> result', result);

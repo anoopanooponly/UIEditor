@@ -2,14 +2,15 @@ import styled from 'styled-components';
 import React, { Component } from 'react';
 import { AppStoreContext } from './newRightPanel';
 import { observer } from "mobx-react";
-
+import { Button } from 'antd';
+import { DesktopOutlined, TabletOutlined,MobileOutlined } from '@ant-design/icons';
 
 const Header1 = styled.div`
   color: #444;
   width: 100%;
   height: 50px;
-  background-color: white;
-  border-bottom: 1px solid #e1e1e1;
+  background-color: #1a1e38;
+  /* border-bottom: 1px solid #e1e1e1; */
   display: flex;
   justify-content: space-between;
 `;
@@ -22,7 +23,7 @@ const HeaderLogo = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  border-right: 1px solid #e1e1e1;
+  /* border-right: 1px solid #e1e1e1; */
   transition: visibility 0s linear 0s, opacity 300ms;
 `;
 
@@ -76,12 +77,18 @@ const Header = () => {
     <Header1>
       <HeaderLogo>New App</HeaderLogo>
       <MiddleHeader>
-        <MiddleHeaderLeft>Left</MiddleHeaderLeft>
+        <MiddleHeaderLeft></MiddleHeaderLeft>
         <MiddleHeadercenter>
-           <div style={{ 'display': 'flex', flexFlow: 'row wrap', 'width': '200px'}}>
-                <button onClick={(e) => store.screenSize = 1600 }>PC</button>
-                <button onClick={(e) => store.screenSize = 900 }>Tab</button>
-                <button onClick={(e) => store.screenSize = 500 }>Mobile</button>
+           <div style={{ display: 'flex',
+    flexFlow: 'row wrap',
+    width: '104px',
+    justifyContent: 'space-between'}}>
+                <Button onClick={(e) => {store.screenSize.size = 1600; store.currentScreenSize("lg")}} type="" icon={<DesktopOutlined />} />
+                <Button onClick={(e) => {store.screenSize.size = 900; store.currentScreenSize("md")}} type="" icon={<TabletOutlined />} />
+                <Button onClick={(e) => {store.screenSize.size = 500; store.currentScreenSize("sm")}} type="" icon={<MobileOutlined />} />
+                {/* <button >PC</button>
+                <button >Tab</button>
+                <button >Mobile</button> */}
            </div>
 
         </MiddleHeadercenter>

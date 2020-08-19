@@ -7,6 +7,8 @@ import appStoreInstance from './stores/AppStore';
 import { AnySoaRecord } from 'dns';
 import makeInspectable from 'mobx-devtools-mst';
 import { observer } from 'mobx-react';
+import config from './config/config'
+
 export const AppStoreContext = React.createContext(appStoreInstance);
 
 const RightDiv = styled.div`
@@ -70,12 +72,13 @@ const move = (
 };
 
 const ViewPort = styled.div`
-  margin-left: 146px;
-  background: white;
-  margin-top: 21px;
-  height: 97%;
-  margin-right: 20px;
-  padding: 7px;
+    margin-left: 96px;
+    background: white;
+    margin-top: 2px;
+    height: 93%;
+    /* margin-right: 20px; */
+    padding: 7px;
+    box-shadow: 0 0 10px #16161668;
 `;
 
 const Item: any = styled.div`
@@ -86,7 +89,7 @@ const Item: any = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   line-height: 1.5;
-  border-radius: 3px;
+  /* border-radius: 3px; */
   background: #fff;
   border: 1px
     ${(props: any) => (props.isDragging ? 'dashed #4099ff' : 'solid #ddd')};
@@ -99,26 +102,28 @@ const Clone = styled(Item)`
 `;
 
 const List: any = styled.div`
-  border: 1px
-    ${(props: any) => (props.isDraggingOver ? 'dashed #000' : 'solid #ddd')};
-  background: #fff;
+  
+    ${(props: any) => (props.isDraggingOver ? 'border: 1px dashed #000' : '')};
+  /* background: #fff; */
   padding: 0.5rem 0.5rem 0;
-  border-radius: 3px;
+  /* border-radius: 3px; */
   flex: 0 0 150px;
   font-family: sans-serif;
 `;
 
 const ControlsPane = styled(List)`
   position: absolute;
-  width: 120px;
-  background-color: white;
-  border-right: 1px solid #e1e1e1;
+  width: 145px;
+  background-color: #292a46;
+  /* border-right: 1px solid #e1e1e1; */
   position: absolute;
   z-index: 5;
-  left: 0;
+  left: -1px;
   top: 0;
   right: 0;
   overflow: hidden;
+  height: 100%;
+  
 `;
 
 
@@ -184,9 +189,7 @@ const NewRightPanel = observer(() => {
     return (
     <RightDiv>
 
-      <button style={{marginLeft: "200px"}} onClick={(e) => resizeScreen()}>new</button>
-
-      <AppStoreContext.Provider value={appStoreInstance}>
+     <AppStoreContext.Provider value={appStoreInstance}>
         <DragDropContext onDragEnd={appStoreInstance.onDragEnd1}>
           <Droppable droppableId="ITEMS" isDropDisabled={true} type="items">
             {(provided, snapshot) => (
@@ -194,8 +197,8 @@ const NewRightPanel = observer(() => {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                {appStoreInstance.ITEMS.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                {config.map((item, index) => (
+                  <Draggable key={item.type} draggableId={item.type} index={index}>
                     {(provided, snapshot) => (
                       <React.Fragment>
                         <Item
@@ -205,9 +208,9 @@ const NewRightPanel = observer(() => {
                           isDragging={snapshot.isDragging}
                           style={provided.draggableProps.style}
                         >
-                          {item.content}
+                          {item.name}
                         </Item>
-                        {snapshot.isDragging && <Clone>{item.content}</Clone>}
+                        {snapshot.isDragging && <Clone>{item.name}</Clone>}
                       </React.Fragment>
                     )}
                   </Draggable>
@@ -215,7 +218,15 @@ const NewRightPanel = observer(() => {
               </ControlsPane>
             )}
           </Droppable>
-          <ViewPort style={{ width: `${appStoreInstance.screenSize}px` }}>
+          <div style={{height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      padding: '10px',
+                      width: '100%'
+    }}>
+   
+            <ViewPort style={{ width: `${appStoreInstance.screenSize.size}px`, transition: 'width 0.3s ease-in-out' }}>
+            
             <Droppable droppableId="droppable" type="App">
               {(provided, snapshot) => (
                 <div
@@ -227,12 +238,15 @@ const NewRightPanel = observer(() => {
                       orgstate={appStoreInstance.uiLayout}
                       list={list}
                       index={index}
+                      currentscreen={appStoreInstance.currentScreen}
                     ></NewDiv>
                   ))}
                 </div>
               )}
             </Droppable>
           </ViewPort>
+          </div>
+          
         </DragDropContext>
         </AppStoreContext.Provider>
     </RightDiv>

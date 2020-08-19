@@ -54,36 +54,36 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          'style-loader',
           {
             loader: 'css-loader',
-            query: {
-              sourceMap: !isProduction,
-              importLoaders: 1,
-              modules: {
-                localIdentName: isProduction
-                  ? '[hash:base64:5]'
-                  : '[local]__[hash:base64:5]',
-              },
-            },
+            // query: {
+            //   sourceMap: !isProduction,
+            //   importLoaders: 1,
+            //   modules: {
+            //     localIdentName: isProduction
+            //       ? '[hash:base64:5]'
+            //       : '[local]__[hash:base64:5]',
+            //   },
+            // },
           },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [
-                require('postcss-import')({ addDependencyTo: webpack }),
-                require('postcss-url')(),
-                require('postcss-preset-env')({
-                  stage: 0,
-                }),
-                require('postcss-reporter')(),
-                require('postcss-browser-reporter')({
-                  disabled: isProduction,
-                }),
-              ],
-            },
-          },
+          // {
+          //   loader: 'postcss-loader',
+          //   options: {
+          //     ident: 'postcss',
+          //     plugins: [
+          //       require('postcss-import')({ addDependencyTo: webpack }),
+          //       require('postcss-url')(),
+          //       require('postcss-preset-env')({
+          //         stage: 0,
+          //       }),
+          //       require('postcss-reporter')(),
+          //       require('postcss-browser-reporter')({
+          //         disabled: isProduction,
+          //       }),
+          //     ],
+          //   },
+          // },
         ],
       },
       // static assets
